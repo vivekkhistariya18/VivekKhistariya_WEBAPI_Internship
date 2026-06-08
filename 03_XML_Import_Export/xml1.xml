@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+   <book>
+      <name>PHP - An Introduction</name>
+      <price>$5.95</price>
+      <id>1</id>
+   </book>
+   <book>
+      <name>PHP - Advanced</name>
+      <price>$25.00</price>
+      <id>2</id>
+   </book>
+   <book>
+      <name>PHP - Black Book</name>
+      <price>$125.00</price>
+      <id>3</id>
+   </book>
+</books>
