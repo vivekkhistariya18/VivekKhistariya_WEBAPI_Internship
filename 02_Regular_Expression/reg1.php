@@ -23,63 +23,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pass = $_POST["pass"];
     $cpass = $_POST["cpass"];
 
-    // First Name
     if (empty($fname) || !preg_match("/^[a-zA-Z ]+$/", $fname)) {
         $message = "Invalid First Name";
-        $fname = ""; // clear only wrong field
+        $fname = ""; 
         $valid = false;
     }
 
-    // Middle Name
     elseif (empty($mname) || !preg_match("/^[a-zA-Z ]+$/", $mname)) {
         $message = "Invalid Middle Name";
         $mname = "";
         $valid = false;
     }
-
-    // Last Name
+        
     elseif (empty($lname) || !preg_match("/^[a-zA-Z ]+$/", $lname)) {
         $message = "Invalid Last Name";
         $lname = "";
         $valid = false;
     }
 
-    // Contact
     elseif (!preg_match("/^[6-9][0-9]{9}$/", $contact)) {
         $message = "Invalid Contact Number";
         $contact = "";
         $valid = false;
     }
 
-    // Email
     elseif (!preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email)) {
         $message = "Invalid Email";
         $email = "";
         $valid = false;
     }
 
-    // Aadhar
     elseif (!preg_match("/^[0-9]{12}$/", $aadhar)) {
         $message = "Invalid Aadhar Number";
         $aadhar = "";
         $valid = false;
     }
 
-    // PAN
     elseif (!preg_match("/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/", strtoupper($pan))) {
         $message = "Invalid PAN Format";
         $pan = "";
         $valid = false;
     }
 
-    // Password
     elseif (!preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/", $pass)) {
         $message = "Weak Password";
         $pass = "";
         $valid = false;
     }
 
-    // Confirm Password
     elseif ($pass != $cpass) {
         $message = "Passwords do not match";
         $cpass = "";
@@ -95,8 +86,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_query($conn, $sql)) {
             $message = "Registration Successful";
-
-            // clear all after success
             $fname = $mname = $lname = $city = $contact = $email = $aadhar = $pan = $gender = "";
             $pass = $cpass = "";
         } else {
