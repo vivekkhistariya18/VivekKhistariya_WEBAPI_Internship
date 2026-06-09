@@ -2,9 +2,12 @@ WEBAPI_Internship
 
 Student Details
 
-Name:Vivek Khistariya
+Name:Vivek Khistariya  
+
 Enrollment Number:249010307020
+
 Semester:5
+
 Subject:Web Development & API Integration
 
  Practical Assignment List (PHP)
@@ -29,6 +32,6 @@ WEBAPI_Internship/
 ├── QRCodeIntegration/
 └── README.md
 
-Technology Used
+Technology Used:
 
 PHP
