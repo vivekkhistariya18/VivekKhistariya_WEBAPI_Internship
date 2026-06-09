@@ -4,6 +4,9 @@ $conn = mysqli_connect("localhost", "root", "", "test");
 
 $message = "";
 
+$fname = $mname = $lname = $city = $contact = $email = $aadhar = $pan = $gender = "";
+$pass = $cpass = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $valid = true;
@@ -20,58 +23,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pass = $_POST["pass"];
     $cpass = $_POST["cpass"];
 
-    if (
-        empty($fname) || empty($mname) || empty($lname) ||
-        empty($city) || empty($contact) || empty($email) ||
-        empty($aadhar) || empty($pan) || empty($gender) ||
-        empty($pass) || empty($cpass)
-    ) {
-        $message = "All fields are compulsory to fill";
+    // First Name
+    if (empty($fname) || !preg_match("/^[a-zA-Z ]+$/", $fname)) {
+        $message = "Invalid First Name";
+        $fname = ""; // clear only wrong field
         $valid = false;
     }
 
-    elseif (!preg_match("/^[a-zA-Z ]+$/", $fname)) {
-        $message = " Invalid First Name";
+    // Middle Name
+    elseif (empty($mname) || !preg_match("/^[a-zA-Z ]+$/", $mname)) {
+        $message = "Invalid Middle Name";
+        $mname = "";
         $valid = false;
     }
 
-    elseif (!preg_match("/^[a-zA-Z ]+$/", $mname)) {
-        $message = " Invalid Middle Name";
+    // Last Name
+    elseif (empty($lname) || !preg_match("/^[a-zA-Z ]+$/", $lname)) {
+        $message = "Invalid Last Name";
+        $lname = "";
         $valid = false;
     }
 
-    elseif (!preg_match("/^[a-zA-Z ]+$/", $lname)) {
-        $message = " Invalid Last Name";
-        $valid = false;
-    }
-
+    // Contact
     elseif (!preg_match("/^[6-9][0-9]{9}$/", $contact)) {
         $message = "Invalid Contact Number";
+        $contact = "";
         $valid = false;
     }
 
+    // Email
     elseif (!preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email)) {
-        $message = " Invalid Email";
+        $message = "Invalid Email";
+        $email = "";
         $valid = false;
     }
 
+    // Aadhar
     elseif (!preg_match("/^[0-9]{12}$/", $aadhar)) {
-        $message = " Invalid Aadhar Number";
+        $message = "Invalid Aadhar Number";
+        $aadhar = "";
         $valid = false;
     }
 
+    // PAN
     elseif (!preg_match("/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/", strtoupper($pan))) {
-        $message = " Invalid PAN Format";
-        $valid = false;
-    }
-	elseif (!preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/", $pass)) {
-        $message = " Use more strong password";
+        $message = "Invalid PAN Format";
+        $pan = "";
         $valid = false;
     }
 
+    // Password
+    elseif (!preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/", $pass)) {
+        $message = "Weak Password";
+        $pass = "";
+        $valid = false;
+    }
 
+    // Confirm Password
     elseif ($pass != $cpass) {
-        $message = " Passwords do not match";
+        $message = "Passwords do not match";
+        $cpass = "";
         $valid = false;
     }
 
@@ -84,6 +95,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_query($conn, $sql)) {
             $message = "Registration Successful";
+
+            // clear all after success
+            $fname = $mname = $lname = $city = $contact = $email = $aadhar = $pan = $gender = "";
+            $pass = $cpass = "";
         } else {
             $message = "Database Error: " . mysqli_error($conn);
         }
@@ -105,11 +120,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .box{
             width: 350px;
-            margin:  auto;
+            margin: auto;
             background: white;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 5px 5px 5px 5px grey;
+            box-shadow: 5px 5px 5px grey;
         }
 
         h2{
@@ -145,10 +160,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-weight: bold;
             margin-bottom: 10px;
         }
-		.gen{
-			text-align: center;
-		}
-		
+
+        .Gen{
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -163,23 +178,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <form method="post">
 
-<input type="text" name="firstname" placeholder="First Name">
-<input type="text" name="middlename" placeholder="Middle Name">
-<input type="text" name="lastname" placeholder="Last Name">
+<input type="text" name="firstname" placeholder="First Name"
+value="<?php echo $fname; ?>">
 
-<input type="text" name="City" placeholder="City">
-<input type="text" name="Contact" placeholder="Contact No">
-<input type="email" name="Email" placeholder="Email">
+<input type="text" name="middlename" placeholder="Middle Name"
+value="<?php echo $mname; ?>">
 
-<input type="text" name="aadhar" placeholder="Aadhar No">
-<input type="text" name="pan" placeholder="PAN No">
+<input type="text" name="lastname" placeholder="Last Name"
+value="<?php echo $lname; ?>">
 
-<p  class="Gen"  >   Gender</p>
-<input type="radio" name="gender" value="male"> Male
-<input type="radio" name="gender" value="female"> Female
-<input type="radio" name="gender" value="other"> Other
+<input type="text" name="City" placeholder="City"
+value="<?php echo $city; ?>">
+
+<input type="text" name="Contact" placeholder="Contact No"
+value="<?php echo $contact; ?>">
+
+<input type="email" name="Email" placeholder="Email"
+value="<?php echo $email; ?>">
+
+<input type="text" name="aadhar" placeholder="Aadhar No"
+value="<?php echo $aadhar; ?>">
+
+<input type="text" name="pan" placeholder="PAN No"
+value="<?php echo $pan; ?>">
+
+<p class="Gen">Gender</p>
+
+<input type="radio" name="gender" value="male"
+<?php if($gender=="male") echo "checked"; ?>> Male
+
+<input type="radio" name="gender" value="female"
+<?php if($gender=="female") echo "checked"; ?>> Female
+
+<input type="radio" name="gender" value="other"
+<?php if($gender=="other") echo "checked"; ?>> Other
 
 <input type="password" name="pass" placeholder="Password">
+
 <input type="password" name="cpass" placeholder="Confirm Password">
 
 <input type="submit" value="Register">
